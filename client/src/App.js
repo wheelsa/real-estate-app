@@ -11,7 +11,7 @@ import { Container, } from "semantic-ui-react";
 
 import Available from './components/Available';
 import Cities from './components/Cities';
-
+import FindHome from './components/FindHome'
 
 const App = () => (
   
@@ -22,6 +22,7 @@ const App = () => (
         <Switch>
           <ProtectedRoute exact path="/" component={Home} />
           <Route exact path="/available" component={Available} />
+          <Route exact path="/findHomes" component={FindHome} />
           <Route exact path='/cities' component={Cities} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />

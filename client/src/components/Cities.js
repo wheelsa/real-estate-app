@@ -20,7 +20,7 @@ class Cities extends React.Component {
   state = { city: null, properties: [], page: 1, total_pages: 0, };
 
   handleChange = (e, {value}) => {
-    this.setState({ city: value, properties: [] }, () => {
+    this.setState({ city: value, properties: [], page:1 }, () => {
        this.getProperties();
     });
   }
@@ -31,11 +31,27 @@ class Cities extends React.Component {
       .then( res => {
         const { properties, total_pages } = res.data; 
         this.setState({ 
-          properties: [...this.state.properties, ...properties], 
+          properties: [...properties], 
           total_pages, 
-          page: page + 1 
+          page: page
         })
       });
+  }
+
+  renderPagination = () => {
+    const {total_pages, page} = this.state;
+    const pages = [];
+    for( let i = 1;  i <= total_pages; i++){
+      pages.push((
+        <span style={{cursor:'pointer', marginRight:'10px', textDecoration: page === i ? 'underline': ''}}
+        onClick={ () => this.setState({page:i}, this.getProperties)}
+      >
+          
+          {i}
+        </span>
+      ))
+      
+    }return pages
   }
 
   render() {
@@ -44,6 +60,8 @@ class Cities extends React.Component {
       <div>
         <br />
         <Form.Select options={options} onChange={this.handleChange} />
+        <br />
+        {this.renderPagination()}
         <Table>
           <Table.Header>
             <Table.Row>
