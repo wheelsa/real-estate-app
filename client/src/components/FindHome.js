@@ -1,9 +1,9 @@
 import React from "react";
 import axios from "axios";
-import { Form } from "semantic-ui-react";
+import { Form, List } from "semantic-ui-react";
 
 export default class FindHome extends React.Component {
-  state = { agents: [], agent: null, buyers: [], buyer: null };
+  state = { agents: [], agent: null, buyers: [], buyer: null , properties: [], };
 
   async componentDidMount() {
     const res = await axios.get("/api/agents");
@@ -40,6 +40,28 @@ export default class FindHome extends React.Component {
     })
   }
 
+  getProperites = (e, { value }) => {
+    this.setState({ buyer: value}, ()=> {
+      axios.get(`/api/buyers/${this.state.buyer}`).then( res => {
+        this.setState({ properties: res.data})
+      })
+    })
+  }
+
+  showProperties = () => {
+    const { properties } = this.state
+    return properties.map( p => {
+      return (
+        <List key={p.id}>
+          <List.Content>
+            <List.Header> Price:  ${p.price}  -  SQ FT. {p.sq_ft} </List.Header>
+            <List.Description> City:  {p.city} </List.Description>
+          </List.Content>
+        </List>
+      )
+    })
+  }
+
   render() {
     //options = [{key, text, value}, {key, text, value},]
     
@@ -53,7 +75,9 @@ export default class FindHome extends React.Component {
         />
         <br />
 
-        {this.state.agent && <Form.Select label='Buyer ' options={this.buyerList()} />}
+        {this.state.agent && <Form.Select label='Buyer ' options={this.buyerList()} onChange={this.getProperites} />}
+        
+        { this.state.properties.length > 0 && this.showProperties()}
       </>
     )
   }

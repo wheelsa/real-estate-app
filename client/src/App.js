@@ -12,6 +12,7 @@ import { Container, } from "semantic-ui-react";
 import Available from './components/Available';
 import Cities from './components/Cities';
 import FindHome from './components/FindHome'
+import CityCost from './components/CityCost';
 
 const App = () => (
   
@@ -26,6 +27,7 @@ const App = () => (
           <Route exact path='/cities' component={Cities} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
+          <Route exact path='/city_cost' component={CityCost} />
           <Route component={NoMatch} />
         </Switch>
       </Container>
